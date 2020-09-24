@@ -1,6 +1,5 @@
 import { Stripe } from 'stripe';
 import { Request, Response } from 'express';
-import { errorMonitor } from 'stream';
 
 const { STRIPE_API_SECRET_KEY }: {STRIPE_API_SECRET_KEY: string} = process.env;
 
