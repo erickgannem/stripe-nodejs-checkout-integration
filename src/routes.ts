@@ -3,6 +3,6 @@ import PaymentController from './controllers/PaymentController';
 
 const routes = Router();
 
-routes.get('/payment_intent', PaymentController.create);
+routes.post('/payment_intent', PaymentController.create);
 
 export default routes;
