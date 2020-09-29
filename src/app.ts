@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 
 import routes from './routes';
 
@@ -19,6 +20,7 @@ class App {
   }
 
   middlewares() {
+    this.server.use(morgan('tiny'));
     this.server.use(cors());
     this.server.use(express.json());
   }
