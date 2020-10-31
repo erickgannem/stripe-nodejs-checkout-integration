@@ -8,17 +8,20 @@ const stripe = new Stripe(STRIPE_API_SECRET_KEY, { apiVersion: '2020-08-27' });
 export default class PaymentController {
   static async create(req: Request, res: Response) {
     try {
-      const { amount, id } = req.body;
+      const { amount, paymentData } = req.body;
+      if (!paymentData) {
+        throw new Error('Payment data not found');
+      }
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
         currency: 'brl',
         metadata: { integration_check: 'accept_a_payment' },
-        payment_method: id,
+        payment_method: paymentData.id,
         confirm: true,
       });
       res.status(200).json({ paymentIntent });
-    } catch (error) {
-      res.status(400).json({ error });
+    } catch (err) {
+      res.status(400).json({ error: { message: err.message } });
     }
   }
 }
