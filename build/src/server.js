@@ -4,5 +4,5 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = __importDefault(require("./app"));
-var PORT = 3030;
+var PORT = process.env.PORT || 3030;
 app_1.default.server.listen(PORT, function () { return "Listening on port: " + PORT; });
