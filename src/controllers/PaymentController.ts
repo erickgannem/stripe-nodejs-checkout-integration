@@ -1,8 +1,10 @@
 import { Stripe } from 'stripe';
 import { Request, Response } from 'express';
+import dotenv from 'dotenv';
 
-const { STRIPE_API_SECRET_KEY }:{STRIPE_API_SECRET_KEY: string} = process.env;
+dotenv.config();
 
+const { STRIPE_API_SECRET_KEY } = process.env;
 const stripe = new Stripe(STRIPE_API_SECRET_KEY, { apiVersion: '2020-08-27' });
 
 export default class PaymentController {
@@ -19,9 +21,10 @@ export default class PaymentController {
         payment_method: paymentData.id,
         confirm: true,
       });
-      res.status(200).json({ paymentIntent });
+      return res.status(200).json({ paymentIntent });
     } catch (err) {
-      res.status(400).json({ error: { message: err.message } });
+      console.log('This comes from node server ', err.message);
+      return res.status(400).json({ error: { message: err.message } });
     }
   }
 }
