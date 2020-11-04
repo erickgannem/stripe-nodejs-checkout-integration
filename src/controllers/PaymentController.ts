@@ -2,7 +2,7 @@ import { Stripe } from 'stripe';
 import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 
-// dotenv.config();
+dotenv.config();
 
 const { STRIPE_API_SECRET_KEY_TEST } = process.env;
 
