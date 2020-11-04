@@ -21,9 +21,8 @@ export default class PaymentController {
         payment_method: paymentData.id,
         confirm: true,
       });
-      return res.status(200).json({ paymentIntent });
+      return res.status(200).json({ status: 'success', paymentIntent });
     } catch (err) {
-      console.log('This comes from node server ', err.message);
       return res.status(400).json({ error: { message: err.message } });
     }
   }
