@@ -35,8 +35,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var stripe_1 = require("stripe");
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 var STRIPE_API_SECRET_KEY = process.env.STRIPE_API_SECRET_KEY;
 var stripe = new stripe_1.Stripe(STRIPE_API_SECRET_KEY, { apiVersion: '2020-08-27' });
 var PaymentController = /** @class */ (function () {
@@ -62,12 +67,10 @@ var PaymentController = /** @class */ (function () {
                             })];
                     case 1:
                         paymentIntent = _b.sent();
-                        res.status(200).json({ paymentIntent: paymentIntent });
-                        return [3 /*break*/, 3];
+                        return [2 /*return*/, res.status(200).json({ status: 'success', paymentIntent: paymentIntent })];
                     case 2:
                         err_1 = _b.sent();
-                        res.status(400).json({ error: { message: err_1.message } });
-                        return [3 /*break*/, 3];
+                        return [2 /*return*/, res.status(400).json({ error: { message: err_1.message } })];
                     case 3: return [2 /*return*/];
                 }
             });
