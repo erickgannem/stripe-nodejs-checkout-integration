@@ -1,16 +1,23 @@
 import { Stripe } from 'stripe';
 import { Request, Response } from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+if (process.env.NODE_ENV === 'development') { dotenv.config({ path: path.resolve(process.cwd(), '.env.dev') }); }
+if (process.env.NODE_ENV === 'production') { dotenv.config({ path: path.resolve(process.cwd(), '.env.prod') }); }
 
-const { STRIPE_API_SECRET_KEY_TEST } = process.env;
+let STRIPE_API_SECRET_KEY: string;
 
-const stripe = new Stripe(STRIPE_API_SECRET_KEY_TEST, { apiVersion: '2020-08-27' });
+if (process.env.STRIPE_API_SECRET_KEY) {
+  STRIPE_API_SECRET_KEY = process.env.STRIPE_API_SECRET_KEY;
+} else {
+  STRIPE_API_SECRET_KEY = 'secret_key_not_found';
+}
+
+const stripe = new Stripe(STRIPE_API_SECRET_KEY, { apiVersion: '2020-08-27' });
 
 export default class PaymentController {
   static async create(req: Request, res: Response) {
-    console.log(STRIPE_API_SECRET_KEY_TEST);
     try {
       const { amount, paymentData } = req.body;
       if (!paymentData) {
@@ -23,7 +30,7 @@ export default class PaymentController {
         payment_method: paymentData.id,
         confirm: true,
       });
-      return res.status(200).json({ status: 'success', paymentIntent });
+      return res.status(200).json({ paymentIntent });
     } catch (err) {
       return res.status(400).json({ error: { message: err.message } });
     }

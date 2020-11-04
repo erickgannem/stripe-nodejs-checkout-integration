@@ -5,8 +5,10 @@
   "author": "Erick Gannem <erickgannem@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./build/src/server.js",
-    "dev:server": "nodemon ./src/server.ts"
+    "start:dev": "NODE_ENV=development node ./build/src/server.js",
+    "start:prod": "NODE_ENV=production node ./build/src/server.js",
+    "local:dev": "NODE_ENV=development nodemon ./src/server.ts",
+    "local:prod": "NODE_ENV=production nodemon ./src/server.ts"
   },
   "devDependencies": {
     "@types/cors": "^2.8.7",

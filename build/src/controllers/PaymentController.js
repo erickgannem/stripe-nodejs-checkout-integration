@@ -41,8 +41,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var stripe_1 = require("stripe");
 var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-var STRIPE_API_SECRET_KEY = process.env.STRIPE_API_SECRET_KEY;
+var path_1 = __importDefault(require("path"));
+if (process.env.NODE_ENV === 'development') {
+    dotenv_1.default.config({ path: path_1.default.resolve(process.cwd(), '.env.dev') });
+}
+if (process.env.NODE_ENV === 'production') {
+    dotenv_1.default.config({ path: path_1.default.resolve(process.cwd(), '.env.prod') });
+}
+var STRIPE_API_SECRET_KEY;
+if (process.env.STRIPE_API_SECRET_KEY) {
+    STRIPE_API_SECRET_KEY = process.env.STRIPE_API_SECRET_KEY;
+}
+else {
+    STRIPE_API_SECRET_KEY = 'secret_key_not_found';
+}
 var stripe = new stripe_1.Stripe(STRIPE_API_SECRET_KEY, { apiVersion: '2020-08-27' });
 var PaymentController = /** @class */ (function () {
     function PaymentController() {
@@ -67,7 +79,7 @@ var PaymentController = /** @class */ (function () {
                             })];
                     case 1:
                         paymentIntent = _b.sent();
-                        return [2 /*return*/, res.status(200).json({ status: 'success', paymentIntent: paymentIntent })];
+                        return [2 /*return*/, res.status(200).json({ paymentIntent: paymentIntent })];
                     case 2:
                         err_1 = _b.sent();
                         return [2 /*return*/, res.status(400).json({ error: { message: err_1.message } })];
